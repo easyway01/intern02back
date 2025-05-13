@@ -21,7 +21,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role', // 允许 role 填充
     ];
+    
 
     /**
      * The attributes that should be hidden for serialization.
