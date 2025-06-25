@@ -41,255 +41,153 @@
 
         /* 导航项间距 */
         .navbar-nav {
-            gap: 20px;
+            gap: 10px;
             /* 适用于 Bootstrap 4 及以上版本 */
         }
 
 
         /* 导航项的左右间距 */
-
         .nav-item {
-
-            margin: 0 20px;
-
+            margin: 0 10px;
         }
 
 
         /* 分隔符样式 */
 
         .navbar-nav .separator {
-
             padding: 0 5px;
             /* | 两侧的间距 */
-
             color: gray;
-
             font-weight: bold;
-
         }
-
 
         .menu-overlay {
-
             display: none;
-
             position: fixed;
-
             top: 0px;
-
             right: 0;
-
             width: 50vw;
-
             height: 100vh;
-
             background: black;
-
             z-index: 1050;
-
             flex-direction: column;
             /* 垂直排列菜单项 */
-
             align-items: center;
             /* 水平居中 */
-
             justify-content: flex-start;
             /* 上对齐 */
-
             padding: 50px 20px;
-
         }
-
-
 
         /* 控制菜单项的排列 */
-
         .menu-overlay .navbar-nav {
-
             padding-left: 0;
             /* 不要左侧的内边距 */
-
             margin-top: 20px;
             /* 为菜单项添加顶部间距 */
-
         }
-
 
         /* 调整菜单项间距 */
-
         .menu-overlay .nav-item {
-
             margin: 10px 0;
             /* 增加上下间距 */
-
         }
-
-
 
         /* 调整导航项的样式 */
-
         .menu-overlay .nav-link {
-
             color: white !important;
-
             font-size: 2rem;
             /* 增大字体 */
-
             padding: 10px 15px;
             /* 增大点击区域 */
-
             display: block;
-
             text-align: left;
             /* 文本左对齐 */
-
         }
 
-
         /* ====== 关闭按钮 (✖) 样式 ====== */
-
         .close-menu {
-
             position: absolute;
-
             top: 20px;
-
             right: 40px;
-
             font-size: 2rem;
-
             color: white;
-
             background: none;
-
             border: none;
-
             cursor: pointer;
-
             z-index: 10002;
-
         }
 
 
         /* ====== 移动端适配 (小屏幕) ====== */
-
         @media (max-width: 992px) {
-
             .navbar-toggler {
-
                 border: none !important;
-
                 box-shadow: none !important;
-
                 outline: none !important;
-
                 background-color: transparent !important;
-
                 padding: 10px;
-
                 border-radius: 8px;
-
             }
-
 
             .navbar-toggler:focus,
-
             .navbar-toggler:active,
-
             .navbar-toggler:hover {
-
                 border: none !important;
-
                 box-shadow: none !important;
-
                 outline: none !important;
-
                 background-color: transparent !important;
-
             }
-
-
 
             /* 汉堡菜单图标变白色 */
-
-
             .navbar-toggler-icon {
-
                 width: 50px;
                 /* 调整图标宽度 */
-
                 height: 40px;
                 /* 调整图标高度 */
-
                 background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='white' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E") !important;
-
                 position: relative;
-
                 top: -20px;
                 /* 调整垂直位置 */
-
                 left: 10px;
                 /* 调整水平位置 */
-
             }
-
-
 
             .navbar {
-
                 background-color: black !important;
                 /* 小屏幕时背景变为纯黑 */
-
             }
-
         }
-
 
         /* ====== 用户下拉菜单 (默认隐藏) ====== */
-
         .dropdown-menu {
-
             display: none;
             /* 默认隐藏 */
-
             position: absolute;
-
             background: black;
             /* 黑色背景 */
-
             border: none;
-
             padding-left: 20px;
-
         }
-
-
 
         /* 下拉菜单项 */
-
         .dropdown-item {
-
             color: white;
-
         }
-
-
 
         /* ====== 分隔线样式 ====== */
-
         .menu-divider {
-
             width: 100%;
-
             border: 0;
-
             border-top: 2px solid white;
             /* 细白色分割线 */
-
             margin: 40px auto 20px auto;
             /* 上方间距 */
-
         }
+        .navbar-nav .nav-item {
+            margin: 0 5px; /* 默认 Bootstrap 是 10px 左右，这里减半 */
+        }
+
     </style>
     <title>Responsive Navbar</title>
 
@@ -322,6 +220,9 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->is('calendar') ? 'active' : '' }}" href="{{ url('/calendar') }}">Calendar</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->is('task-list') ? 'active' : '' }}" href="{{ url('/task-list') }}">Task-list</a>
                 </li>
             </ul>
 
@@ -368,7 +269,6 @@
     <!-- 黑色菜单遮罩层 -->
     <div class="menu-overlay" id="menuOverlay">
 
-
         <!-- 分割线 -->
         <hr class="menu-divider">
 
@@ -384,6 +284,12 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link {{ Request::is('addProduct') ? 'active' : '' }}" href="{{ url('/addProduct') }}">Add</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ Request::is('calendar') ? 'active' : '' }}" href="{{ url('/calendar') }}">Calendar</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ Request::is('task-list') ? 'active' : '' }}" href="{{ url('/task-list') }}">Task-list</a>
             </li>
         </ul>
 
@@ -445,7 +351,6 @@
                 closeMenu();
             }
         }
-
 
         // 处理 Profile 下拉菜单
         document.addEventListener("DOMContentLoaded", function() {

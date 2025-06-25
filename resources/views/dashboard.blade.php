@@ -190,10 +190,7 @@
         .custom-arrow.right {
             right: 20px;
         }
-        
-        .container {
-            margin-top: 50px; /* Adjust the value as needed */
-        }
+
         .update-card {
             height: 100%;
             position: relative;

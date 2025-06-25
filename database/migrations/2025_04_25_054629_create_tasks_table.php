@@ -8,11 +8,13 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('tasks', function (Blueprint $table) {
-            $table->id();
+            $table->id(); // ✅ 添加主键
             $table->string('title');
-            $table->date('start');
-            $table->date('end')->nullable();
-            $table->timestamps();
+            $table->date('due_date')->nullable();
+            $table->date('end_date')->nullable();
+            $table->text('description')->nullable();
+            $table->string('status')->default('pending');
+            $table->timestamps(); // ✅ 添加 created_at 和 updated_at
         });
     }
 
@@ -21,3 +23,4 @@ return new class extends Migration {
         Schema::dropIfExists('tasks');
     }
 };
+

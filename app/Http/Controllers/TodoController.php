@@ -2,81 +2,69 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Todo;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class TodoController extends Controller
 {
-    // ✅ 显示日历页面
     public function index()
     {
-        return view('calendar'); // 页面视图
-        return Todo::where('user_id', auth()->id())->get();
-
+        return response()->json(Todo::all());
     }
 
-    // ✅ 获取所有任务（FullCalendar 用）
-    public function getTodos()
-    {
-        // FullCalendar 需要字段 id, title, start, end, allDay
-        return response()->json(
-            Todo::select('id', 'title', 'due_date as start', 'end_date as end')
-                ->get()
-                ->map(function ($todo) {
-                    return [
-                        'id' => $todo->id,
-                        'title' => $todo->title,
-                        'start' => $todo->start,
-                        'end' => $todo->end,
-                        'allDay' => true,
-                    ];
-                })
-        );
-    }
-
-    // ✅ 添加任务
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'title' => 'required|string',
             'due_date' => 'required|date',
-            'end_date' => 'nullable|date',
+            'end_date' => 'nullable|date|after_or_equal:due_date',
+            'description' => 'nullable|string',
         ]);
 
         $todo = Todo::create([
-            'title' => $request->title,
-            'due_date' => $request->due_date,
-            'end_date' => $request->end_date,
-            'duration_type' => $request->duration_type ?? 'day',
+            'title' => $validated['title'],
+            'due_date' => $validated['due_date'],
+            'end_date' => $validated['end_date'] ?? $validated['due_date'],
+            'description' => $validated['description'] ?? '',
+            'status' => Todo::STATUS_IMPLEMENTING,
         ]);
 
-        return response()->json([
-            'id' => $todo->id,
-            'title' => $todo->title,
-            'due_date' => $todo->due_date,
-            'end_date' => $todo->end_date,
-        ]);
+        return response()->json($todo);
     }
 
-    // ✅ 更新任务名称
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'title' => 'required|string'
-        ]);
+        try {
+            $validated = $request->validate([
+    'title' => 'sometimes|required|string',
+    'due_date' => 'sometimes|date',
+    'end_date' => 'sometimes|date|after_or_equal:due_date',
+    'description' => 'nullable|string',
+    'status' => 'sometimes|in:implementing,done', // ✅ 增加这一行
+]);
 
-        $todo = Todo::findOrFail($id);
-        $todo->update(['title' => $request->title]);
 
-        return response()->json(['message' => '任务已更新']);
+            $todo = Todo::findOrFail($id);
+            $todo->update($validated);
+
+            return response()->json($todo);
+        } catch (\Exception $e) {
+            Log::error("Update failed for ID $id: " . $e->getMessage());
+            return response()->json(['message' => 'Failed to update task'], 500);
+        }
     }
 
-    // ✅ 删除任务
     public function destroy($id)
     {
-        $todo = Todo::findOrFail($id);
+        $todo = Todo::find($id);
+
+        if (!$todo) {
+            return response()->json(['message' => 'Task not found'], 404);
+        }
+
         $todo->delete();
 
-        return response()->json(['message' => '任务已删除']);
+        return response()->json(['message' => 'Task deleted successfully']);
     }
 }

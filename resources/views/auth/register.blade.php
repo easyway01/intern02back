@@ -210,54 +210,58 @@
 
       <!-- Laravel Register Form -->
       <form method="POST" action="{{ route('register') }}">
-        @csrf
+  @csrf
 
-        <!-- Name -->
-        <div class="input-group">
-          <i class="fa fa-user"></i>
-          <input type="text" name="name" placeholder="Full Name" required value="{{ old('name') }}">
-        </div>
-        @error('name')
-          <div class="error-text">{{ $message }}</div>
-        @enderror
+  <!-- Name -->
+  <div class="input-group">
+    <i class="fa fa-user"></i>
+    <input type="text" name="name" placeholder="Name" required value="{{ old('name') }}">
+  </div>
+  @error('name')
+    <div class="error-text">{{ $message }}</div>
+  @enderror
 
-        <!-- Email -->
-        <div class="input-group">
-          <i class="fa fa-envelope"></i>
-          <input type="email" name="email" placeholder="Email" required value="{{ old('email') }}">
-        </div>
-        @error('email')
-          <div class="error-text">{{ $message }}</div>
-        @enderror
+  <!-- Email -->
+  <div class="input-group">
+    <i class="fa fa-envelope"></i>
+    <input type="email" name="email" placeholder="Email" required value="{{ old('email') }}">
+  </div>
+  @error('email')
+    <div class="error-text">{{ $message }}</div>
+  @enderror
 
-<!-- Password -->
-<div class="input-group">
-  <i class="fa fa-lock"></i>
-  <input type="password" name="password" id="password" placeholder="Password" required>
-  <span class="toggle-password" onclick="togglePassword('password', this)">
-    <i class="fa fa-eye"></i>
-  </span>
-</div>
-@error('password')
-  <div class="error-text">{{ $message }}</div>
-@enderror
+  <!-- Password -->
+  <div class="input-group">
+    <i class="fa fa-lock"></i>
+    <input type="password" name="password" id="password" placeholder="Password" required>
+    <span class="toggle-password" onclick="togglePassword('password', this)">
+      <i class="fa fa-eye"></i>
+    </span>
+  </div>
+  @error('password')
+    <div class="error-text">{{ $message }}</div>
+  @enderror
 
+  <!-- Confirm Password -->
+  <div class="input-group">
+    <i class="fa fa-lock"></i>
+    <input type="password" name="password_confirmation" placeholder="Confirm Password" required>
+  </div>
 
-        <!-- Confirm Password -->
-        <div class="input-group">
-          <i class="fa fa-lock"></i>
-          <input type="password" name="password_confirmation" placeholder="Confirm Password" required>
-        </div>
+  <!-- Hidden role field -->
+  <input type="hidden" name="role" value="user">
 
-        <!-- Submit -->
-        <button type="submit" class="btn">REGISTER</button>
-        <!-- Already have an account? -->
-        <div class="mt-4 text-sm text-gray-600">
-            <br>
-          {{ __("Already have an account?") }}
-          <a href="{{ route('login') }}" class="login-link">{{ __('Login') }}</a>
-        </div>
-      </form>
+  <!-- Submit -->
+  <button type="submit" class="btn">REGISTER</button>
+
+  <!-- Already have an account? -->
+  <div class="mt-4 text-sm text-gray-600">
+    <br>
+    {{ __("Already have an account?") }}
+    <a href="{{ route('login') }}" class="login-link">{{ __('Login') }}</a>
+  </div>
+</form>
+
     </div>
 
     <!-- Right: Illustration -->

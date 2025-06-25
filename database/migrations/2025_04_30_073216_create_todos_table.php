@@ -10,17 +10,17 @@ class CreateTodosTable extends Migration
     {
         Schema::create('todos', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // 外键关联 users 表
             $table->string('title');
-            $table->date('due_date');
-            $table->date('end_date');
-            $table->string('duration_type')->default('day');
+            $table->datetime('due_date');
+            $table->datetime('end_date')->nullable();
+            $table->text('description')->nullable();
+            $table->string('status')->default('implementing');
             $table->timestamps();
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('todos');
+        Schema::dropIfExists('todos'); // ✅ 正确的表名
     }
 }
